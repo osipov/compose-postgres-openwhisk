@@ -44,8 +44,13 @@ function UpdateComposeService(logger) {
       var value = (req.body || {}).value;
       var ctx = value;
 
-      // logger.log('[run] this is my log entry v8')
-
+      //execute a sequence of operations
+      //first query a geocoding service (from Pitney Bowes)
+      //for a latitude and longitude coordinates of the input address
+      //then connect to a Postgres database in Compose, insert a record,
+      //with the geocoded address and then release a client connection
+      //to the Posgres databse in compose
+      //complete with either a 200 status code or a 500 in case of errors
       queryPitneyBowes(ctx)
       .then(connectToCompose)
       .then(insertIntoCompose)

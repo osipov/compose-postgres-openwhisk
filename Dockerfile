@@ -1,4 +1,6 @@
-#Dockerfile for an OpenWhisk action based on the Docker skeleton example from the Bluemix documentation https://new-console.ng.bluemix.net/docs/openwhisk/openwhisk_actions.html#openwhisk_actions_docker
+#Dockerfile for an OpenWhisk action based on the Docker skeleton example 
+#from the Bluemix documentation 
+# https://new-console.ng.bluemix.net/docs/openwhisk/openwhisk_actions.html#openwhisk_actions_docker
 
 FROM ubuntu:14.04
 
