@@ -52,12 +52,15 @@ function wrapWithExceptionHandler(se, eh) {
     try {
       se(req, res, next);
     } catch (err) {
-      console.log('[wrapWithExceptionHandler] err %s', err);
+      console.log('[wrapWithExceptionHandler] error %s', err);
       eh(err, req, res, next);
     }
   }
 }
 
+function exceptionHandler(err, req, res, next) {
+  res.json({"msg" : "internal error", "error": err});
+}
 
 /**
  * instantiate a service  which handles REST calls from the Invoker
@@ -66,11 +69,11 @@ var service = require('./service').getService(console);
 
 app.set('port', PORT);
 app.use(bodyParser.json());
-app.post('/init', wrapWithExceptionHandler(service.init));
-app.post('/run',  wrapWithExceptionHandler(service.run));
+app.post('/init', wrapWithExceptionHandler(service.init, exceptionHandler));
+app.post('/run',  wrapWithExceptionHandler(service.run, exceptionHandler));
 app.use(function(err, req, res, next) {
     console.error(err.stack);
     res.status(500).send('bad request');
 });
-console.log('launching an OpenWhisk Docker action implementation...');
+console.log('launching an OpenWhisk Docker-based action implementation...');
 service.start(app);

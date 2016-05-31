@@ -25,15 +25,13 @@ function UpdateComposeService(logger) {
      * req.body = { main: String, code: String, name: String }
      */
     this.init = function init(req, res) {
-      if (status === Status.ready) {
-        try {
-          var body = req.body || {};
-          logger.log('[init] %s', body);
-          res.status(200).send();
-        } catch (err) {
-          logger.log('[init] error %err', err);
-          res.status(500).send();
-        }
+      try {
+        var body = req.body || {};
+        logger.log('[init] entry');
+        res.status(200).send();
+      } catch (err) {
+        logger.log('[init] error %err', err);
+        res.status(500).send();
       }
     }
 
