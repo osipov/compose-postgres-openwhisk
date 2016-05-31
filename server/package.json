@@ -1,0 +1,13 @@
+{
+  "name": "compose-postgres-openwhisk",
+  "version": "0.0.1",
+  "description": "Sample OpenWhisk trigger and action to interact with Compose Postgres",
+  "dependencies": {
+    "body-parser": "^1.11.0",
+    "express": "^4.11.2",
+    "log4js": "^0.6.20",
+    "pg":"4.5.5",
+    "promise":"7.1.1",
+    "request":"2.60.0"
+  }
+}
