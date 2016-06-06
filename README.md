@@ -25,9 +25,9 @@ From your command line type in
 
 to authenticate with IBM Bluemix and then enter your Bluemix email, password, as well as the deployment organization and space as prompted.
 
-*NOTE:* you will need to remember your selection of the deployment organization and space for the configuration of the OpenWhisk action
+**NOTE:** you will need to remember your selection of the deployment organization and space for the configuration of the OpenWhisk action
 
-To create a new Cloudant database, run the following commands from your command line
+To create a new Cloudant database, run the following commands from your console
 
 ```
 cf create-service cloudantNoSQLDB Shared cloudant-deployment
@@ -77,8 +77,7 @@ insertIntoCompose
 releaseComposeConnection
 ```
 
-
-
+The code to integrate with the OpenWhisk platform is in the ```server/app.js``` file. When executed, the code starts a server on port 8080 and listens for HTTP POST requests to the server's _init_ and _run_ endpoints. Each of these endpoints delegates to the corresponding method implementation in ```server/service.js```. The init method logs entry and returns an HTTP 200 status code as expected by the OpenWhisk platform. The run method executes the process described above to query for geocoordinates and to insert the retrieved data to Compose Postgres. 
 
 ##Create a stateless, Docker-based OpenWhisk action
 
@@ -90,7 +89,6 @@ Make sure that your [Docker Hub](https://hub.docker.com) account is working corr
 ```docker login```
 
 You will be prompted and will need to enter your Docker username and password to login.
-
 
 To get started with OpenWhisk, download and install a command line interface using the instructions from the following link
 
