@@ -14,7 +14,7 @@ To run the code below you will need to sign up for the following services
 **NOTE:** before proceeding configure environment variables based on the settings from the services above:
 
 ```
-export USERNAME=<DockerHub username>
+export USERNAME=<Docker Hub username>
 export PBAPPID=<Pitney Bowes App Id>
 ```
 
@@ -24,7 +24,7 @@ When signing up for a Compose trial, make sure that you choose Postgres as your 
 
 Once you are done with the Compose sign up process and your Postgres database deployment is completed, open the deployments tab of the [Compose portal](https://app.compose.io/) and click on the link for your Postgres instance. You may already have a default database called *compose* in the deployment. To check that this database exists, click on a sub-tab called Browser and verify that there is a click to a database called *compose*. If the database does not exist, you can create one using a corresponding button on the right. 
 
-Next, open the database by clicking on the compose link and choose the sub-tab named SQL. At the bottom of the SQL textbox add the following CREATE TABLE statement and click the Run button.
+Next, open the database by clicking on the *compose* database link and choose the sub-tab named SQL. At the bottom of the SQL textbox add the following CREATE TABLE statement and click the Run button.
 
 ```
 CREATE TABLE "address" ("address" "text", "city" "text", "state" "text", "postalCode" "text", "country" "text", "lat" "float", "lon" "float");
@@ -97,7 +97,7 @@ On successful creation of a database you should get back a JSON response that lo
 {"ok":true}
 ```
 
-## Clone the OpenWhisk action implementation
+### Clone the OpenWhisk action implementation
 
 The OpenWhisk action is implemented as a Node.JS based application that will be packaged as a Docker image and published to Docker Hub. You can clone the code for the action from github by running the following from your command line
 
@@ -105,7 +105,7 @@ The OpenWhisk action is implemented as a Node.JS based application that will be 
 
 This will create a ```compose-postgres-openwhisk``` folder in your current working directory.
 
-Most of the code behind the action is in the ```server/service.js``` file in the functions listed below. As evident from the function names, once the action is triggered with a JSON object containing address data, the process is to first query the Pitney Bowes geolocation data to validate the address and to obtain the latitude and the longitude geolocation coordinates. Next, the process retrives a connection to the Compose Postgres database, runs a SQL insert statement to put the address along with the coordinates into the database, and returns the connection back to the connection pool.
+Most of the code behind the action is in the ```server/service.js``` file in the functions listed below. As evident from the function names, once the action is triggered with a JSON object containing address data, the process is to first query the Pitney Bowes geolocation data to validate the address and to obtain the latitude and the longitude geolocation coordinates. Next, the process retrieves a connection to the Compose Postgres database, runs a SQL insert statement to put the address along with the coordinates into the database, and returns the connection back to the connection pool.
 
 ```
 queryPitneyBowes
@@ -124,20 +124,18 @@ https://docs.docker.com/engine/installation/
 
 Make sure that your [Docker Hub](https://hub.docker.com) account is working correctly by trying to login using
 
-```docker login```
+```docker login -u $USERNAME```
 
-You will be prompted and will need to enter your Docker username and password.
+You will be prompted and will need to enter your Docker Hub password.
 
 Change to the ```compose-postgres-openwhisk``` as your working directory and execute the following commands to build the Docker image with the Node.JS based action implementation and to push the image to Docker Hub. 
-
-**NOTE:** you need to replace the username string in the following commands with your Docker Hub username
 
 ```
 docker build -t $USERNAME/compose .
 docker push $USERNAME/compose
 ```
 
-Use your browser to login to your Docker Hub after the docker push command is done. You should be able to see the compose/insert in the list of the Docker Hub images.
+Use your browser to login to https://hub.docker.com after the docker push command is done. You should be able to see the *compose* image in the list of your Docker Hub images.
 
 ###Create a stateless, Docker-based OpenWhisk action
 
@@ -148,10 +146,10 @@ https://new-console.ng.bluemix.net/openwhisk/cli
 Configure OpenWhisk to use the same Bluemix organization and space as your Cloudant instance by executing the following from your command line
 
 ```
-wsk property set --namespace
+wsk property set --namespace $ORG_$SPACE
 ```
 
-You will be prompted to choose the namespace that looks like ```organization_space```. If you don't remember the organization and space that you should use, refer back to the section on creating a Cloudant database.
+If your $ORG and $SPACE environment variables are not set, refer back to the section on creating a Cloudant database.
 
 Next update the list of packages by executing
 
@@ -163,9 +161,7 @@ One of the bindings listed in the output should be named ```Bluemix_cloudant-dep
 
 The following commands need to be executed to configure your OpenWhisk instance to run the action in case if a new document is placed in the Cloudant database. 
 
-The first command sets up a Docker-based OpenWhisk action called composeInsertAction that is implemented using the $USERNAME/compose image from DockerHub. 
-
-**NOTE:** you need to replace the username string below with your DockerHub username, connString with the Compose Postgres connection string (which must include your credentials) and pbAppId with the Pitney Bowes application ID from the application you have registered from the Pitney Bowes Developer Portal. 
+The first command sets up a Docker-based OpenWhisk action called composeInsertAction that is implemented using the ```$USERNAME/compose``` image from Docker Hub. 
 
 ```
 wsk action create --docker composeInsertAction $USERNAME/compose
