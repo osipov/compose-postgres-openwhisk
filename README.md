@@ -60,6 +60,26 @@ On successful creation of a database you should get back a JSON response that lo
 {"ok":true}
 ```
 
+## Clone the OpenWhisk action implementation
+
+The OpenWhisk action is implemented as a Node.JS based application that will be packaged as a Docker image and published to Docker Hub. You can clone the code for the action from github by running the following from your command line
+
+```git clone https://github.com/osipov/compose-postgres-openwhisk.git```
+
+This will create a compose-postgres-openwhisk folder in your current working directory.
+
+The implementation of the logic of a service to execute the action is in the ```server/service.js``` file. Most of the logic in the functions listed below. As evident from the function names, once the action is triggered with a JSON object containing address data, the process is to first query the Pitney Bowes geolocation data to validate the address and to obtain the latitude and the longitude geolocation coordinates. Next, the process retrives a connection to the Compose Postgres database, runs a SQL insert statement to put the address along with the coordinates into the database, and returns the connection back to the connection pool.
+
+```
+queryPitneyBowes
+connectToCompose
+insertIntoCompose
+releaseComposeConnection
+```
+
+
+
+
 ##Create a stateless, Docker-based OpenWhisk action
 
 If you don't have Docker already installed, it is available per the instructions provided in the link below. Note that if you are using Windows or OSX, you will want to install Docker Toolbox.
@@ -70,12 +90,6 @@ Make sure that your [Docker Hub](https://hub.docker.com) account is working corr
 ```docker login```
 
 You will be prompted and will need to enter your Docker username and password to login.
-
-The OpenWhisk action is implemented as a Node.JS based application packaged as a Docker image and available from Docker Hub. You can clone the code for the action from github by running the following from your command line
-
-```git clone https://github.com/osipov/compose-postgres-openwhisk.git```
-
-This will create a compose-postgres-openwhisk folder in your current working directory.
 
 
 To get started with OpenWhisk, download and install a command line interface using the instructions from the following link
