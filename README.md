@@ -11,11 +11,11 @@ To run the code below you will need to sign up for the following services
 - [Pitney Bowes Geocoding API](https://pitneybowes.developer.pbondemand.com/portal/#tab=signUp)
 - [Docker Hub](https://hub.docker.com)
 
-**NOTE:** before proceeding configure environment variables based on the settings from the services above:
+**NOTE:** before proceeding, configure the following environment variables from your command line. Use the Docker Hub username for the USERNAME variable and the Pitney Bowes application ID for the PBAPPID variable.
 
 ```
-export USERNAME=<Docker Hub username>
-export PBAPPID=<Pitney Bowes App Id>
+export USERNAME=''
+export PBAPPID=''
 ```
 
 ###Create a Postgres database in IBM Compose
@@ -85,10 +85,18 @@ The first command creates a new Cloudant deployment in your IBM Bluemix account,
 }
 ```
 
-To create a Cloudant database, first replace the username, password, and host strings in the curl command below using the values from the JSON document.
+You will need to put these Cloudant credentials in environment variables to create a database and populate the database with documents. Insert the values from the returned JSON document in the corresponding environment variables in the code snippet below.
 
 ```
-curl https://$USERNAME:$PASSWORD@$HOST/address_db -X PUT
+export USER=''
+export PASSWORD=''
+export HOST=''
+```
+
+After the environment variables are correctly configured you should be able to create a new Cloudant database by executing the following curl command
+
+```
+curl https://$USER:$PASSWORD@$HOST/address_db -X PUT
 ```
 
 On successful creation of a database you should get back a JSON response that looks like this:
@@ -168,4 +176,18 @@ wsk action create --docker composeInsertAction $USERNAME/compose
 wsk action update composeInsertAction --param connString "$CONNSTRING" --param pbAppId "$PBAPPID"
 wsk trigger create composeTrigger --feed /$ORG_$SPACE/Bluemix_cloudant-deployment_cloudant-key/changes --param includeDoc true --param dbname address_db
 wsk rule create --enable composeRule composeTrigger composeInsertAction
+```
+
+###Test the serverless computing action by creating a document in the Cloudant database
+
+Open a separate console window and execute the following command to monitor the result of running the OpenWhisk action 
+
+```
+wsk activation poll
+```
+
+In another console, create a document in Cloudant using the following curl command
+
+```
+curl https://$USER:$PASSWORD@$HOST/address_db -X POST -H "Content-Type: application/json" -d '{"address": "1600 Pennsylvania Ave", "city": "Washington", "state": "DC", "postalCode": "20006", "country": "USA"}'
 ```
