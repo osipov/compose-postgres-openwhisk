@@ -174,7 +174,7 @@ The first command sets up a Docker-based OpenWhisk action called composeInsertAc
 ```
 wsk action create --docker composeInsertAction $USERNAME/compose
 wsk action update composeInsertAction --param connString "$CONNSTRING" --param pbAppId "$PBAPPID"
-wsk trigger create composeTrigger --feed /$ORG_$SPACE/Bluemix_cloudant-deployment_cloudant-key/changes --param includeDoc true --param dbname address_db
+wsk trigger create composeTrigger --feed /$ORG\_$SPACE/Bluemix_cloudant-deployment_cloudant-key/changes --param includeDoc true --param dbname address_db
 wsk rule create --enable composeRule composeTrigger composeInsertAction
 ```
 
