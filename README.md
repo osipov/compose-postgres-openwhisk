@@ -154,7 +154,7 @@ https://new-console.ng.bluemix.net/openwhisk/cli
 Configure OpenWhisk to use the same Bluemix organization and space as your Cloudant instance by executing the following from your command line
 
 ```
-wsk property set --namespace $ORG_$SPACE
+wsk property set --namespace $ORG\_$SPACE
 ```
 
 If your $ORG and $SPACE environment variables are not set, refer back to the section on creating a Cloudant database.
