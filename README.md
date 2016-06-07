@@ -191,3 +191,100 @@ In another console, create a document in Cloudant using the following curl comma
 ```
 curl https://$USER:$PASSWORD@$HOST/address_db -X POST -H "Content-Type: application/json" -d '{"address": "1600 Pennsylvania Ave", "city": "Washington", "state": "DC", "postalCode": "20006", "country": "USA"}'
 ```
+
+On success you should see in the console running the ```wsk activation poll``` a response similar to following 
+
+```
+[run] 200 status code result
+{
+  "command": "SELECT",
+  "rowCount": 1,
+  "oid": null,
+  "rows": [
+    {
+      "address": "1600 Pennsylvania Ave",
+      "city": "Washington",
+      "state": "DC",
+      "postalcode": "20006",
+      "country": "USA",
+      "lat": 38.8968999990778,
+      "lon": -77.0408
+    }
+  ],
+  "fields": [
+    {
+      "name": "address",
+      "tableID": 16415,
+      "columnID": 1,
+      "dataTypeID": 25,
+      "dataTypeSize": -1,
+      "dataTypeModifier": -1,
+      "format": "text"
+    },
+    {
+      "name": "city",
+      "tableID": 16415,
+      "columnID": 2,
+      "dataTypeID": 25,
+      "dataTypeSize": -1,
+      "dataTypeModifier": -1,
+      "format": "text"
+    },
+    {
+      "name": "state",
+      "tableID": 16415,
+      "columnID": 3,
+      "dataTypeID": 25,
+      "dataTypeSize": -1,
+      "dataTypeModifier": -1,
+      "format": "text"
+    },
+    {
+      "name": "postalcode",
+      "tableID": 16415,
+      "columnID": 4,
+      "dataTypeID": 25,
+      "dataTypeSize": -1,
+      "dataTypeModifier": -1,
+      "format": "text"
+    },
+    {
+      "name": "country",
+      "tableID": 16415,
+      "columnID": 5,
+      "dataTypeID": 25,
+      "dataTypeSize": -1,
+      "dataTypeModifier": -1,
+      "format": "text"
+    },
+    {
+      "name": "lat",
+      "tableID": 16415,
+      "columnID": 6,
+      "dataTypeID": 701,
+      "dataTypeSize": 8,
+      "dataTypeModifier": -1,
+      "format": "text"
+    },
+    {
+      "name": "lon",
+      "tableID": 16415,
+      "columnID": 7,
+      "dataTypeID": 701,
+      "dataTypeSize": 8,
+      "dataTypeModifier": -1,
+      "format": "text"
+    }
+  ],
+  "_parsers": [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "rowAsArray": false
+}
+```
